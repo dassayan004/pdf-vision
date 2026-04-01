@@ -1,0 +1,1 @@
+- [Project overview](project_overview.md) — FastAPI PDF text extraction API using Google Cloud Vision OCR, Python 3.12, uv
