@@ -1,32 +1,55 @@
 from functools import lru_cache
-from pathlib import Path
 
-from pydantic import field_validator
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    # =========================
+    # App Static Config
+    # =========================
+    app_name: str = "PDF Vision API"
+    app_title: str = "PDF Vision"
+    app_description: str = (
+        "A PDF extraction service powered by Google Cloud Vision API."
+    )
+    app_version: str = "0.1.0"
+
+    # =========================
+    # Environment Variables
+    # =========================
+    google_application_credentials: str = Field(
+        default="",
+        validation_alias="GOOGLE_APPLICATION_CREDENTIALS",
+    )
+    google_sdk_python_logging_scope: str = Field(
+        default="",
+        validation_alias="GOOGLE_SDK_PYTHON_LOGGING_SCOPE",
+    )
+
+    @field_validator(
+        "google_application_credentials", "google_sdk_python_logging_scope"
+    )
+    @classmethod
+    def validate_not_empty(cls, v: str, info) -> str:
+        if not v or not v.strip():
+            raise ValueError(f"{info.field_name} must not be empty or whitespace")
+        return v
+
+    # =========================
+    # Config
+    # =========================
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
+        extra="ignore",
     )
-    google_application_credentials: Path = Path()
-    google_sdk_python_logging_scope: str = ""
-
-    @field_validator("google_application_credentials")
-    @classmethod
-    def validate_credentials(cls, v: Path) -> Path:
-        if not v or v == Path():
-            raise ValueError(
-                "GOOGLE_APPLICATION_CREDENTIALS is required. "
-                "Set it in your .env file to the path of your service account JSON key."
-            )
-        if not v.is_file():
-            raise ValueError(f"Credentials file not found: {v}")
-        return v
 
 
+# =========================
+# Cached instance (singleton)
+# =========================
 @lru_cache
 def get_settings() -> Settings:
     return Settings()

@@ -1,5 +1,5 @@
-from google.oauth2 import service_account
 from google.cloud import vision
+from google.oauth2 import service_account
 
 from app.config import get_settings
 
