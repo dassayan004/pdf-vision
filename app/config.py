@@ -18,8 +18,8 @@ class Settings(BaseSettings):
     # =========================
     # Environment Variables
     # =========================
-    google_application_credentials: str = Field(
-        default="",
+    google_application_credentials: str | None = Field(
+        default=None,
         validation_alias="GOOGLE_APPLICATION_CREDENTIALS",
     )
     google_sdk_python_logging_scope: str = Field(
