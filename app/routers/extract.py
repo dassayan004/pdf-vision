@@ -15,7 +15,7 @@ def extract_pdf(file: UploadFile = File(...)):
     try:
         pages = extract_text_from_pdf(content)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
     return ExtractResponse(
         filename=file.filename,
