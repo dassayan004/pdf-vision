@@ -1,16 +1,20 @@
-import os
-
+from google.oauth2 import service_account
 from google.cloud import vision
 
 from app.config import get_settings
 
 settings = get_settings()
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = settings.google_application_credentials
-os.environ["GOOGLE_SDK_PYTHON_LOGGING_SCOPE"] = settings.google_sdk_python_logging_scope
+
+
+def get_vision_client() -> vision.ImageAnnotatorClient:
+    credentials = service_account.Credentials.from_service_account_file(
+        str(settings.google_application_credentials)
+    )
+    return vision.ImageAnnotatorClient(credentials=credentials)
 
 
 def extract_text_from_pdf(pdf_content: bytes) -> list[dict]:
-    client = vision.ImageAnnotatorClient()
+    client = get_vision_client()
 
     input_config = vision.InputConfig(
         content=pdf_content,
