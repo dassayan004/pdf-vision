@@ -1,0 +1,30 @@
+# Python
+.venv
+__pycache__
+*.py[oc]
+*.egg-info
+
+# Test / lint cache
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.coverage
+htmlcov
+
+# Dev files
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+nginx/
+
+# Misc
+.DS_Store
+*.log
