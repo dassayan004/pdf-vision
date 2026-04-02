@@ -22,8 +22,8 @@ def get_pdf_page_count(pdf_content: bytes) -> int:
 def extract_text_from_pdf(pdf_content: bytes) -> list[dict]:
     client = get_vision_client()
     total_pages = get_pdf_page_count(pdf_content)
-    print(f"Total pages in PDF: {total_pages}")
-    # ✅ IMPORTANT
+    # print(f"Total pages in PDF: {total_pages}")
+
     all_pages = []
 
     for start in range(1, total_pages + 1, 5):
