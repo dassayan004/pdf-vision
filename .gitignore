@@ -13,3 +13,4 @@ wheels/
 .env
 !credentials/.gitkeep
 credentials/*
+.DS_Store
